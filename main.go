@@ -51,14 +51,14 @@ func main() {
 	fmt.Printf("Results for %d, day %d\n", year, day)
 	task1Result, err := dailyTask.Task1(data)
 	if err != nil {
-		fmt.Println("Error processing Task 1:", err)
+		fmt.Println("Error processing Task 1: ", err)
 		os.Exit(1)
 	}
 	fmt.Printf("Task 1: %s\n", *task1Result)
 
 	task2Result, err := dailyTask.Task2(data)
 	if err != nil {
-		fmt.Println("Error processing Task 2:", err)
+		fmt.Println("Error processing Task 2: ", err)
 		os.Exit(1)
 	}
 	fmt.Printf("Task 2: %s\n", *task2Result)
@@ -79,6 +79,7 @@ func getData(year int, day int) (*string, error) {
 		return nil, fmt.Errorf("AOC_COOKIE environment variable is not set")
 	}
 	client := resty.New()
+
 	client.SetHeader("cookie", cookie)
 	resp, err := client.R().Get(fmt.Sprintf("https://adventofcode.com/%d/day/%d/input", year, day))
 	if err != nil {
@@ -91,19 +92,8 @@ func getData(year int, day int) (*string, error) {
 		return nil, fmt.Errorf("error creating directory: %v", err)
 	}
 
-	writer, err := os.Create(filePath)
-	if err != nil {
-		panic(err)
-	}
-	// close fo on exit and check for its returned error
-	defer func() {
-		if err := writer.Close(); err != nil {
-			panic(err)
-		}
-	}()
-
 	if err = os.WriteFile(filePath, []byte(responseBody), 0644); err != nil {
-		return nil, fmt.Errorf("rror writing file: %v", err)
+		return nil, fmt.Errorf("error writing file: %v", err)
 	}
 
 	return &responseBody, nil
