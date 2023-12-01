@@ -85,7 +85,10 @@ func generateStacks(lines []string) ([]Stack, int) {
 		currentLine := lines[i]
 		index := 0
 		for n := 1; n < len(currentLine); n += 4 {
-			stacks[index].Push(string(currentLine[n]))
+			value := string(currentLine[n])
+			if value != "" && value != " " {
+				stacks[index].Push(value)
+			}
 			index++
 		}
 	}
@@ -103,9 +106,6 @@ type Stack []string
 
 // Push adds an element to the top of the stack
 func (s *Stack) Push(value string) {
-	if value == "" || value == " " {
-		return
-	}
 	*s = append(*s, value)
 }
 
@@ -131,7 +131,6 @@ func (s *Stack) GetLast() string {
 	return value
 }
 
-// GetLast just gets the last without popping
 func (s *Stack) Print() {
 	fmt.Printf("Stack: ")
 	if len(*s) == 0 {
@@ -139,7 +138,7 @@ func (s *Stack) Print() {
 		return
 	}
 	for _, letter := range *s {
-		fmt.Printf("%s", letter)
+		fmt.Printf("%v", letter)
 	}
 	fmt.Printf("\n")
 }
