@@ -76,7 +76,6 @@ func getData(year int, day int) (*string, error) {
 
 	// Read the file if it exists
 	if file, err := os.ReadFile(filePath); err == nil {
-
 		result := string(file)
 		return &result, nil
 	}
@@ -98,7 +97,6 @@ func getData(year int, day int) (*string, error) {
 	if err := os.MkdirAll(filepath.Dir(filePath), 0755); err != nil {
 		return nil, fmt.Errorf("error creating directory: %v", err)
 	}
-
 	if err = os.WriteFile(filePath, []byte(responseBody), 0644); err != nil {
 		return nil, fmt.Errorf("error writing file: %v", err)
 	}
