@@ -3,6 +3,7 @@ package tasks2022
 import (
 	"fmt"
 	"github.com/RichardD012/go-advent-of-code/tasks"
+	"github.com/RichardD012/go-advent-of-code/utils"
 	"strconv"
 	"strings"
 )
@@ -38,7 +39,7 @@ func (m Day5) Task2(data *string) (*string, error) {
 	for i := lastIndex + 1; i < len(lines); i++ {
 		line := lines[i]
 		numMove, from, to := processDirection(line)
-		var tempStack Stack
+		var tempStack utils.Stack[string]
 		for n := 0; n < numMove; n++ {
 			newVal, _ := stacks[from-1].Pop()
 			tempStack.Push(newVal)
@@ -57,7 +58,6 @@ func (m Day5) Task2(data *string) (*string, error) {
 }
 
 func processDirection(line string) (int, int, int) {
-	//fmt.Printf("%s\n", line)
 	line = strings.ReplaceAll(line, "move ", "")
 	line = strings.ReplaceAll(line, " from ", ",")
 	line = strings.ReplaceAll(line, " to ", ",")
@@ -68,7 +68,7 @@ func processDirection(line string) (int, int, int) {
 	return numMove, from, to
 }
 
-func generateStacks(lines []string) ([]Stack, int) {
+func generateStacks(lines []string) ([]utils.Stack[string], int) {
 	var stackLines []string
 	lastIndex := 0
 	for index, line := range lines {
@@ -80,7 +80,7 @@ func generateStacks(lines []string) ([]Stack, int) {
 	}
 	bottomLine := strings.Fields(stackLines[len(stackLines)-1])
 	numColumns, _ := strconv.Atoi(bottomLine[len(bottomLine)-1])
-	stacks := make([]Stack, numColumns)
+	stacks := make([]utils.Stack[string], numColumns)
 	for i := lastIndex - 2; i >= 0; i-- {
 		currentLine := lines[i]
 		index := 0
@@ -95,50 +95,8 @@ func generateStacks(lines []string) ([]Stack, int) {
 	return stacks, lastIndex
 }
 
-func printStacks(stacks []Stack) {
+func printStacks(stacks []utils.Stack[string]) {
 	for _, stack := range stacks {
 		stack.Print()
 	}
-}
-
-// Stack type based on a slice of integers
-type Stack []string
-
-// Push adds an element to the top of the stack
-func (s *Stack) Push(value string) {
-	*s = append(*s, value)
-}
-
-// Pop removes an element from the top of the stack and returns it
-// Returns 0 and false if the stack is empty
-func (s *Stack) Pop() (string, bool) {
-	if len(*s) == 0 {
-		return "", false
-	}
-	index := len(*s) - 1
-	value := (*s)[index]
-	*s = (*s)[:index]
-	return value, true
-}
-
-// GetLast just gets the last without popping
-func (s *Stack) GetLast() string {
-	if len(*s) == 0 {
-		return ""
-	}
-	index := len(*s) - 1
-	value := (*s)[index]
-	return value
-}
-
-func (s *Stack) Print() {
-	fmt.Printf("Stack: ")
-	if len(*s) == 0 {
-		fmt.Printf("\n")
-		return
-	}
-	for _, letter := range *s {
-		fmt.Printf("%v", letter)
-	}
-	fmt.Printf("\n")
 }
