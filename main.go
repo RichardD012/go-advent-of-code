@@ -1,8 +1,10 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/RichardD012/go-advent-of-code/tasks"
+	_ "github.com/RichardD012/go-advent-of-code/tasks/2022"
 	_ "github.com/RichardD012/go-advent-of-code/tasks/2023"
 	"github.com/go-resty/resty/v2"
 	"os"
@@ -20,10 +22,11 @@ func createTask(year int, day int) (tasks.DailyTask, error) {
 
 func main() {
 	currentTime := time.Now()
-	day := currentTime.Day()
-	year := currentTime.Year()
-	month := currentTime.Month()
-
+	day := flag.Int("d", currentTime.Day(), "day (default current day)")
+	year := flag.Int("y", currentTime.Year(), "year (default current year)")
+	month := flag.Int("m", int(currentTime.Month()), "month (default current month)")
+	// Parse the flags
+	flag.Parse()
 	//Debug override for previous years
 	/*if true {
 		day = 1
@@ -31,24 +34,24 @@ func main() {
 		month = 12
 	}*/
 
-	if month != 12 {
+	if *month != 12 {
 		fmt.Println("Not currently December")
 		os.Exit(1)
 	}
 
-	data, err := getData(year, day)
+	data, err := getData(*year, *day)
 	if err != nil {
 		fmt.Println("Error fetching data:", err)
 		os.Exit(1)
 	}
 
-	dailyTask, err := createTask(year, day)
+	dailyTask, err := createTask(*year, *day)
 	if err != nil {
 		fmt.Println("Error:", err)
 		os.Exit(1)
 	}
 
-	fmt.Printf("Results for %d, day %d\n", year, day)
+	fmt.Printf("Results for %d, day %d\n", *year, *day)
 	task1Result, err := dailyTask.Task1(data)
 	if err != nil {
 		fmt.Println("Error processing Task 1: ", err)

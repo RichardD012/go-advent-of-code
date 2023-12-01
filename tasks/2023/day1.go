@@ -1,7 +1,6 @@
 package tasks2023
 
 import (
-	"fmt"
 	"github.com/RichardD012/go-advent-of-code/tasks"
 	"regexp"
 	"strconv"
@@ -25,13 +24,11 @@ func (m Day1) Task1(data *string) (*string, error) {
 	for _, line := range lines {
 		// Replace non-digit characters with an empty string
 		onlyDigits := re.ReplaceAllString(line, "")
-		num, err := strconv.Atoi(fmt.Sprintf("%s%s", string(onlyDigits[0]), string(onlyDigits[len(onlyDigits)-1])))
-		if err == nil {
-			sum += num
-		}
+		num, _ := strconv.Atoi(string(onlyDigits[0]) + string(onlyDigits[len(onlyDigits)-1]))
+		sum += num
 	}
 
-	result := fmt.Sprintf("%v", sum)
+	result := strconv.Itoa(sum)
 	return &result, nil
 }
 
@@ -46,26 +43,16 @@ func (m Day1) Task2(data *string) (*string, error) {
 	// Use the test data
 	//lines := []string{"two1nine", "eightwothree", "abcone2threexyz", "xtwone3four", "4nineeightseven2", "zoneight234", "7pqrstsixteen"}
 	for _, line := range lines {
-		// format the numbers
-		//fmt.Printf("%s - ", line)
 		line = replaceNumbers(line)
-		//fmt.Printf("%s - ", line)
-		// Replace non-digit characters with an empty string
 		onlyDigits := re.ReplaceAllString(line, "")
-		//fmt.Printf("%s - ", onlyDigits)
-		//fmt.Printf("%s%s\n", string(onlyDigits[0]), string(onlyDigits[len(onlyDigits)-1]))
-		num, err := strconv.Atoi(fmt.Sprintf("%s%s", string(onlyDigits[0]), string(onlyDigits[len(onlyDigits)-1])))
-		if err == nil {
-			sum += num
-		} else {
-			return nil, err
-		}
+		num, _ := strconv.Atoi(string(onlyDigits[0]) + string(onlyDigits[len(onlyDigits)-1]))
+		sum += num
 	}
-	result := fmt.Sprintf("%v", sum)
+	result := strconv.Itoa(sum)
 	return &result, nil
 }
 
-// this is whildly inefficient for what its doing - I thought it was a _single- replacement so that if it was fiveight it could only be 5ight and not 58
+// this is whildly inefficient for what its doing - I thought it was a _single_ replacement so that if it was fiveight it could only be 5ight and not 58
 func replaceNumbers(line string) string {
 	index := 0
 	returnString := ""
