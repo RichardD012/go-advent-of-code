@@ -58,6 +58,7 @@ func (m Day2) Task1(data *string) (*string, error) {
 				}
 			}
 		}
+		//determine if round possible
 		if redPossible && bluePossible && greenPossible {
 			idSum += roundNumber
 		}
