@@ -68,10 +68,10 @@ func main() {
 }
 
 func getData(year int, day int) (*string, error) {
-	currentTime := time.Now()
-	if year > currentTime.Year() || (year == currentTime.Year() && day > currentTime.Day()) {
+	//currentTime := time.Now()
+	/*if year > currentTime.Year() || (year == currentTime.Year() && day > currentTime.Day()) {
 		return nil, fmt.Errorf("don't fetch data in the future")
-	}
+	}*/
 	filePath := filepath.Join("input", fmt.Sprintf("%d", year), fmt.Sprintf("day-%d-input.txt", day))
 
 	// Read the file if it exists
