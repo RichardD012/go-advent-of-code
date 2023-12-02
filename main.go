@@ -21,7 +21,14 @@ func createTask(year int, day int) (tasks.DailyTask, error) {
 }
 
 func main() {
-	currentTime := time.Now()
+	loc, err := time.LoadLocation("America/New_York")
+	if err != nil {
+		fmt.Println("Error loading location: ", err)
+		os.Exit(1)
+	}
+
+	// Get the current time in New York
+	currentTime := time.Now().In(loc)
 	day := flag.Int("d", currentTime.Day(), "day (default current day)")
 	year := flag.Int("y", currentTime.Year(), "year (default current year)")
 	month := flag.Int("m", int(currentTime.Month()), "month (default current month)")
@@ -68,10 +75,14 @@ func main() {
 }
 
 func getData(year int, day int) (*string, error) {
-	//currentTime := time.Now()
-	/*if year > currentTime.Year() || (year == currentTime.Year() && day > currentTime.Day()) {
+	loc, err := time.LoadLocation("America/New_York")
+	if err != nil {
+		return nil, err
+	}
+	currentTime := time.Now().In(loc)
+	if year > currentTime.Year() || (year == currentTime.Year() && day > currentTime.Day()) {
 		return nil, fmt.Errorf("don't fetch data in the future")
-	}*/
+	}
 	filePath := filepath.Join("input", fmt.Sprintf("%d", year), fmt.Sprintf("day-%d-input.txt", day))
 
 	// Read the file if it exists

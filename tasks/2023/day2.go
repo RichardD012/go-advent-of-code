@@ -30,15 +30,15 @@ func (m Day2) Task1(data *string) (*string, error) {
 
 		splitData := strings.Split(line, ":")
 		roundNumber, _ := strconv.Atoi(regexPattern.ReplaceAllString(splitData[0], ""))
-		colorCodeGroups := strings.Split(splitData[1], ";")
+		throws := strings.Split(splitData[1], ";")
 		redPossible := true
 		bluePossible := true
 		greenPossible := true
-		for _, group := range colorCodeGroups {
-			iGroup := strings.Split(group, ",")
+		for _, throw := range throws {
+			iGroup := strings.Split(throw, ",")
 			//determine if each subsection here is possible
 			for _, set := range iGroup {
-				color, nums := determineOutput(set)
+				color, nums := determineOutput(set, *regexPattern)
 				switch color {
 				case Red:
 					if nums > 12 {
@@ -69,20 +69,19 @@ func (m Day2) Task1(data *string) (*string, error) {
 
 func (m Day2) Task2(data *string) (*string, error) {
 	result := "No Result"
+	regexPattern := regexp.MustCompile("[^0-9]")
 	lines := strings.Split(*data, "\n")
 	idSum := 0
 	for _, line := range lines {
 
 		splitData := strings.Split(line, ":")
 		colorCodeGroups := strings.Split(splitData[1], ";")
-		minRed := 0
-		minBlue := 0
-		minGreen := 0
+		minRed, minBlue, minGreen := 0, 0, 0
 		for _, group := range colorCodeGroups {
 			iGroup := strings.Split(group, ",")
 			//determine if each subsection here is possible
 			for _, set := range iGroup {
-				color, nums := determineOutput(set)
+				color, nums := determineOutput(set, *regexPattern)
 				switch color {
 				case Red:
 					if nums >= minRed {
@@ -110,10 +109,10 @@ func (m Day2) Task2(data *string) (*string, error) {
 	return &result, nil
 }
 
-func determineOutput(code string) (Color, int) {
+func determineOutput(code string, regexPattern regexp.Regexp) (Color, int) {
 	var outputColor Color
 	count := 0
-	regexPattern := regexp.MustCompile("[^0-9]")
+	//regexPattern := regexp.MustCompile("[^0-9]")
 	if strings.Contains(code, "green") {
 		outputColor = Green
 	} else if strings.Contains(code, "blue") {
