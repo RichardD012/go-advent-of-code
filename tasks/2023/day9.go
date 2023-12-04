@@ -16,6 +16,7 @@ func init() {
 func (m Day9) Task1(data *string) (*string, error) {
 	lines := strings.Split(*data, "\n")
 	result := strconv.Itoa(len(lines))
+
 	return &result, nil
 }
 
