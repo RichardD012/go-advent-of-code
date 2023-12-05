@@ -24,3 +24,7 @@ func (m Day8) Task2(data *string) (*string, error) {
 	result := strconv.Itoa(len(lines))
 	return &result, nil
 }
+
+func (m Day8) getTestData() []string {
+	return []string{}
+}
