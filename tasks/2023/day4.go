@@ -75,8 +75,6 @@ func (m Day4) Task2(data *string) (*string, error) {
 				lineList[i+index].count += lineStruct.count * 1
 			}
 		}
-	}
-	for _, lineStruct := range lineList {
 		sum += lineStruct.count
 	}
 	result := strconv.Itoa(sum)
