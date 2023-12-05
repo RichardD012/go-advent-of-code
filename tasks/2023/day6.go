@@ -15,6 +15,7 @@ func init() {
 
 func (m Day6) Task1(data *string) (*string, error) {
 	lines := strings.Split(*data, "\n")
+	lines = m.getTestData()
 	result := strconv.Itoa(len(lines))
 	return &result, nil
 }
@@ -23,4 +24,8 @@ func (m Day6) Task2(data *string) (*string, error) {
 	lines := strings.Split(*data, "\n")
 	result := strconv.Itoa(len(lines))
 	return &result, nil
+}
+
+func (m Day6) getTestData() []string {
+	return []string{}
 }
