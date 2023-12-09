@@ -19,8 +19,10 @@ func (m Day9) Task1(data *string) (*string, error) {
 	lastNumberSum := 0
 	for _, line := range lines {
 		numList := convertToNumList(line)
-		lastDifference := calculateLastDifference(numList)
-		lastNumberSum += numList[len(numList)-1] + lastDifference
+		//lastDifference := calculateLastDifference(numList)
+		//lastNumberSum += numList[len(numList)-1] + lastDifference
+		diffList := generateDifferenceList(numList)
+		lastNumberSum += numList[len(numList)-1] + diffList[len(diffList)-1]
 	}
 	result := strconv.Itoa(lastNumberSum)
 	return &result, nil
@@ -32,13 +34,44 @@ func (m Day9) Task2(data *string) (*string, error) {
 	lastNumberSum := 0
 	for _, line := range lines {
 		numList := convertToNumList(line)
-		lastDifference := calculateFirstDifference(numList)
-		lastNumberSum += numList[0] - lastDifference
+		//lastDifference := calculateFirstDifference(numList)
+		//lastNumberSum += numList[0] - lastDifference
+		diffList := generateDifferenceList(numList)
+		lastNumberSum += numList[0] - diffList[0]
 	}
 	result := strconv.Itoa(lastNumberSum)
 	return &result, nil
 }
 
+func generateDifferenceList(list []int) []int {
+	set := false
+	recurse := false
+	firstDifference := -1
+	var diffList []int
+	for index, intVal := range list[1:] {
+		difference := intVal - list[index]
+		diffList = append(diffList, difference)
+		if set == false {
+			firstDifference = difference
+			set = true
+		} else {
+			if difference != firstDifference {
+				recurse = true
+			}
+		}
+	}
+	if recurse == false {
+		return diffList
+	}
+	newList := generateDifferenceList(diffList)
+	//prepend the previous diff
+	returnList := append([]int{diffList[0] - newList[0]}, diffList[:]...)
+	//append the next diff
+	returnList = append(returnList, diffList[len(diffList)-1]+newList[len(newList)-1])
+	return returnList
+}
+
+// Single function
 func calculateLastDifference(list []int) int {
 	set := false
 	recurse := false
@@ -62,6 +95,7 @@ func calculateLastDifference(list []int) int {
 	return diffList[len(diffList)-1] + calculateLastDifference(diffList)
 }
 
+// Single function
 func calculateFirstDifference(list []int) int {
 	set := false
 	recurse := false
