@@ -15,20 +15,74 @@ func init() {
 
 func (m Day9) Task1(data *string) (*string, error) {
 	lines := strings.Split(*data, "\n")
+	//lines = m.getTestData()
 	lastNumberSum := 0
-	for _, line := range lines[0:1] {
+	for _, line := range lines {
 		numList := convertToNumList(line)
 		lastDifference := calculateLastDifference(numList)
 		lastNumberSum += numList[len(numList)-1] + lastDifference
 	}
 	result := strconv.Itoa(lastNumberSum)
+	return &result, nil
+}
 
+func (m Day9) Task2(data *string) (*string, error) {
+	lines := strings.Split(*data, "\n")
+	//lines = m.getTestData()
+	lastNumberSum := 0
+	for _, line := range lines {
+		numList := convertToNumList(line)
+		lastDifference := calculateFirstDifference(numList)
+		lastNumberSum += numList[0] - lastDifference
+	}
+	result := strconv.Itoa(lastNumberSum)
 	return &result, nil
 }
 
 func calculateLastDifference(list []int) int {
-	returnInt := 0
-	return returnInt
+	set := false
+	recurse := false
+	firstDifference := -1
+	var diffList []int
+	for index, intVal := range list[1:] {
+		difference := intVal - list[index]
+		diffList = append(diffList, difference)
+		if set == false {
+			firstDifference = difference
+			set = true
+		} else {
+			if difference != firstDifference {
+				recurse = true
+			}
+		}
+	}
+	if recurse == false {
+		return firstDifference
+	}
+	return diffList[len(diffList)-1] + calculateLastDifference(diffList)
+}
+
+func calculateFirstDifference(list []int) int {
+	set := false
+	recurse := false
+	firstDifference := -1
+	var diffList []int
+	for index, intVal := range list[1:] {
+		difference := intVal - list[index]
+		diffList = append(diffList, difference)
+		if set == false {
+			firstDifference = difference
+			set = true
+		} else {
+			if difference != firstDifference {
+				recurse = true
+			}
+		}
+	}
+	if recurse == false {
+		return firstDifference
+	}
+	return diffList[0] - calculateFirstDifference(diffList)
 }
 
 func convertToNumList(line string) []int {
@@ -38,12 +92,6 @@ func convertToNumList(line string) []int {
 		returnList = append(returnList, num)
 	}
 	return returnList
-}
-
-func (m Day9) Task2(data *string) (*string, error) {
-	lines := strings.Split(*data, "\n")
-	result := strconv.Itoa(len(lines))
-	return &result, nil
 }
 
 func (m Day9) getTestData() []string {
