@@ -44,18 +44,18 @@ func (m Day9) Task2(data *string) (*string, error) {
 }
 
 func generateDifferenceList(list []int) []int {
-	set := false
+	//set := false
 	recurse := false
-	firstDifference := -1
+	var firstDifference *int
 	var diffList []int
 	for index, intVal := range list[1:] {
 		difference := intVal - list[index]
 		diffList = append(diffList, difference)
-		if set == false {
-			firstDifference = difference
+		if firstDifference == nil {
+			*firstDifference = difference
 			set = true
 		} else {
-			if difference != firstDifference {
+			if difference != *firstDifference {
 				recurse = true
 			}
 		}
