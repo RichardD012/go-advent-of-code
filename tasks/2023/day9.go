@@ -63,7 +63,7 @@ func generateDifferenceList(list []int) []int {
 	}
 	newList := generateDifferenceList(diffList)
 	//prepend the previous diff
-	returnList := append([]int{diffList[0] - newList[0]}, diffList[:]...)
+	returnList := append([]int{diffList[0] - newList[0]}, diffList...)
 	//append the next diff
 	returnList = append(returnList, diffList[len(diffList)-1]+newList[len(newList)-1])
 	return returnList
