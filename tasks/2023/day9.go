@@ -71,48 +71,44 @@ func generateDifferenceList(list []int) []int {
 
 // Single function
 func calculateLastDifference(list []int) int {
-	set := false
 	recurse := false
-	firstDifference := -1
+	var firstDifference *int
 	var diffList []int
 	for index, intVal := range list[1:] {
 		difference := intVal - list[index]
 		diffList = append(diffList, difference)
-		if set == false {
-			firstDifference = difference
-			set = true
+		if firstDifference == nil {
+			firstDifference = &difference
 		} else {
-			if difference != firstDifference {
+			if difference != *firstDifference {
 				recurse = true
 			}
 		}
 	}
 	if recurse == false {
-		return firstDifference
+		return *firstDifference
 	}
 	return diffList[len(diffList)-1] + calculateLastDifference(diffList)
 }
 
 // Single function
 func calculateFirstDifference(list []int) int {
-	set := false
 	recurse := false
-	firstDifference := -1
+	var firstDifference *int
 	var diffList []int
 	for index, intVal := range list[1:] {
 		difference := intVal - list[index]
 		diffList = append(diffList, difference)
-		if set == false {
-			firstDifference = difference
-			set = true
+		if firstDifference == nil {
+			firstDifference = &difference
 		} else {
-			if difference != firstDifference {
+			if difference != *firstDifference {
 				recurse = true
 			}
 		}
 	}
 	if recurse == false {
-		return firstDifference
+		return *firstDifference
 	}
 	return diffList[0] - calculateFirstDifference(diffList)
 }
